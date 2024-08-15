@@ -1,5 +1,5 @@
 # Byte-compiled / optimized / DLL files
-Test_Tagged_Images/
+
 __pycache__/
 *.py[cod]
 *$py.class
@@ -51,6 +51,9 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+Test_Tagged_Images/
+Test_CBZs/
+output_directory/
 
 # Translations
 *.mo
