@@ -55,6 +55,7 @@ Test_Tagged_Images/
 Test_CBZs/
 output_directory/
 
+
 # Translations
 *.mo
 *.pot
