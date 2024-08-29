@@ -69,6 +69,7 @@ class MetaFormat(Enum):
     InvokeAI = "InvokeAI"
     EasyDiffusion = "EasyDiffusion"
     Fooocus = "Fooocus"
+    StableDiffusion = "Stable Diffusion"  # Added Stable Diffusion format
     Unknown = "Unknown"
 
 class FileType(Enum):
@@ -97,11 +98,7 @@ class ImageGenerationMetadata:
 
     @staticmethod
     def read_metadata(file_path: str) -> FileParameters:
-        # Ensure VERBOSE_OUTPUT is False by default
         global VERBOSE_OUTPUT
-        if 'VERBOSE_OUTPUT' not in globals():
-            VERBOSE_OUTPUT = False
-        
         file_parameters = FileParameters(path=file_path)
         file_type = ImageGenerationMetadata.get_file_type(file_path)
 
@@ -127,7 +124,6 @@ class ImageGenerationMetadata:
                     if isinstance(value, bytes):
                         value = value.decode('utf-8', errors='replace')
                     if key.lower() in ["parameters", "prompt", "workflow"]:
-                        # Handle ComfyUI specific metadata
                         file_parameters.parameters = value
 
         except Exception as e:
@@ -148,7 +144,6 @@ class ImageGenerationMetadata:
                     decoded_tag = TAGS.get(tag, tag)
                     if decoded_tag == "UserComment":
                         user_comment = value.decode("utf-8", errors='replace')
-                        # Parse the user comment for known fields
                         file_parameters.prompt = user_comment
 
         except Exception as e:
@@ -194,7 +189,7 @@ class MetadataScanner:
         for extension in extensions.split(','):
             if recursive:
                 for root, _, filenames in os.walk(directory):
-                    if exclude_paths and any root.startswith(p) for p in exclude_paths:
+                    if exclude_paths and any(root.startswith(p) for p in exclude_paths):
                         continue
                     files.extend([os.path.join(root, f) for f in filenames if f.endswith(extension)])
             else:
